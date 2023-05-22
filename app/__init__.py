@@ -2,6 +2,8 @@ from flask import Flask
 from config import Config
 from app.extensions import db
 from app.main import bp as main_bp
+
+from app.news import bp as news_bp
 from app.posts import bp as posts_bp
 from app.questions import bp as questions_bp
 
@@ -17,6 +19,7 @@ def create_app(config_class=Config):
 
     # Register blueprints here
     app.register_blueprint(main_bp)
+    app.register_blueprint(news_bp, url_prefix='/news')
     app.register_blueprint(posts_bp, url_prefix='/post')
     app.register_blueprint(questions_bp, url_prefix='/questions')
 

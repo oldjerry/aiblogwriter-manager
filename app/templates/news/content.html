@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Content Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <div class="content">
+        <h1>{{ news.title }}</h1>
+        <p class="details">Date: {{ news.date }} | Category: {{ news.category }} | Processed: {% if news.processed %}Yes{% else %}No{% endif %}</p>
+        <p><a href="{{ news.href}} " class="back-link">{{ news.title }}</a></p>
+        <p><a href="{{ news.img_href }}" class="back-link">news.img_href</a></p>
+        <div class="article">
+            {{ news.article | safe }}
+        </div>
+    </div>
+
+    <a href="{{ url_for('news.index') }}" class="back-link">Back to List</a>
+</body>
+</html>

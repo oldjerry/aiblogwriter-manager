@@ -29,23 +29,15 @@
             inline-size: 100%;
         }
 
-        .title a {
-            color: #00a36f;
-            text-decoration: none;
-        }
 
-        nav a {
-            color: #d64161;
-            font-size: 3em;
-            margin-left: 50px;
-            text-decoration: none;
-        }
 
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"
 </head>
 <body>
     <nav>
         <a href="{{ url_for('main.index') }}">FlaskApp</a>
+        <a href="{{ url_for('news.index') }}">News</a>
         <a href="{{ url_for('posts.index') }}">Posts</a>
         <a href="{{ url_for('posts.categories') }}">Categories</a>
         <a href="{{ url_for('questions.index') }}">Questions</a>
