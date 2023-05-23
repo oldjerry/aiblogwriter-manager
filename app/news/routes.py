@@ -1,7 +1,9 @@
-from flask import render_template, request
+from flask import render_template, request, url_for, redirect
 from app.news import bp
 from app.extensions import db
 from app.models.news import ScrapedNews as News
+
+from app.autotasks.push_news import scheduled_push_news
 
 # Items per page
 items_per_page = 10
@@ -33,3 +35,12 @@ def content(news_id):
     news = News.query.get(news_id)
 
     return render_template('news/content.html', news=news)
+
+
+@bp.route('/push/', methods=['GET', 'POST'])
+def push_news():
+    # Fetch the item from the database
+    if request.method == 'POST':
+        scheduled_push_news()
+
+    return redirect(url_for('news.index'))

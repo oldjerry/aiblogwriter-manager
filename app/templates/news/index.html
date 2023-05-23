@@ -5,7 +5,15 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <div class="content">
         <div>
-            <h2>This is the News Flask blueprint</h2>
+
+            <div>
+                <form method="POST" action="{{ url_for('news.push_news') }}">
+                    <h2>This is the News Page
+                        <input class="button" type="submit" value="Push News">
+                    </h2>
+                </form>
+
+            </div>
 <!--            <ul>-->
             <div class="item-list">
             {% for news in newses %}
@@ -32,5 +40,6 @@
         <a href="{{ url_for('news.index', page=page+1) }}">Next &gt;</a>
         {% endif %}
     </div>
+
 
 {% endblock %}
