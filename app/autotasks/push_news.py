@@ -3,6 +3,7 @@ from app.extensions import db
 from app.models.news import ScrapedNews as News
 
 from wordpress_xmlrpc import Client, WordPressPost
+from wordpress_xmlrpc.methods import media, posts
 from wordpress_xmlrpc.methods.posts import NewPost
 
 
@@ -38,6 +39,9 @@ def publish_to_wordpress(news):
         'category': ['News', news.category]  # 文章所属分类，没有则自动创建
     }
 
+    # default news featured image ID
+    post.thumbnail = 1270
+
     # 发布文章
     client.call(NewPost(post))
     return
@@ -47,6 +51,6 @@ def get_new_content(news):
 
     new_title = news.title
 
-    new_article = news.img_href + news.href + news.article
+    new_article = news.img_href + news.article + news.href
 
     return new_title, new_article
