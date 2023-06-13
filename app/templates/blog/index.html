@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <span class="title"><h1>{% block title %} The Blogs Page {% endblock %}</h1></span>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <div class="content">
+        <div>
+
+            <div>
+                <form method="POST" action="{{ url_for('blog.push_post') }}">
+                    <h2>This is the Blogs Page
+                        <input class="button" type="submit" value="Push Blogs">
+                    </h2>
+                </form>
+
+            </div>
+<!--            <ul>-->
+            <div class="item-list">
+            {% for post in posts %}
+                <div class="item">
+                    <h2>{{ post.title }}</h2>
+                    <p class="date">Date: {{ post.date }}</p>
+                    <p class="category">Category: {{ post.category }}</p>
+                    <p class="status">Processed: {% if post.processed %}Yes{% else %}No{% endif %}</p>
+                    <a href="{{ url_for('blog.content', post_id=post.id) }}">Read More</a>
+                </div>
+            {% endfor %}
+            </div>
+<!--            </ul>-->
+
+        </div>
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('blog.index', page=page-1) }}">&lt; Previous</a>
+        {% endif %}
+
+        {% if page < total_pages %}
+        <a href="{{ url_for('blog.index', page=page+1) }}">Next &gt;</a>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

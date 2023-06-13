@@ -5,7 +5,7 @@ from app.extensions import db
 from app.main import bp as main_bp
 
 from app.news import bp as news_bp
-from app.posts import bp as posts_bp
+from app.blog import bp as blog_bp
 from app.questions import bp as questions_bp
 
 
@@ -26,8 +26,8 @@ def create_app(config_class=Config):
     # Register blueprints here
     app.register_blueprint(main_bp)
     app.register_blueprint(news_bp, url_prefix='/news')
-    app.register_blueprint(posts_bp, url_prefix='/post')
-    app.register_blueprint(questions_bp, url_prefix='/questions')
+    app.register_blueprint(blog_bp, url_prefix='/blog')
+    # app.register_blueprint(questions_bp, url_prefix='/questions')
 
     # Register apscheduler tasks
     scheduler = APScheduler()
@@ -50,6 +50,5 @@ def create_app(config_class=Config):
     #     scheduler.add_job(func=scheduled_push_news, trigger=interval, id='test_one')
 
     # scheduler.start()
-
 
     return app

@@ -1,24 +1,24 @@
 import os
 from app.extensions import db
-from app.models.news import ScrapedNews as News
+from app.models.post import ScrapedPost as Blog
 
 from wordpress_xmlrpc import Client, WordPressPost
-from wordpress_xmlrpc.methods import media, posts
 from wordpress_xmlrpc.methods.posts import NewPost
+from wordpress_xmlrpc.methods import media, posts
 
 
-def scheduled_push_news():
+def scheduled_push_blog():
 
     with db.app.app_context():
-        newses = News.query.filter_by(processed=False).all()
-        for news in newses:
-            publish_to_wordpress(news)
-            news.processed = True
+        blogs = Blog.query.filter_by(processed=False).all()
+        for blog in blogs:
+            publish_to_wordpress(blog)
+            blog.processed = True
 
         db.session.commit()
 
 
-def publish_to_wordpress(news):
+def publish_to_wordpress(blog):
     # 从 .env 文件中读取 WordPress 配置信息
     wordpress_url = os.getenv('WORDPRESS_URL')
     wordpress_username = os.getenv('WORDPRESS_USERNAME')
@@ -28,15 +28,15 @@ def publish_to_wordpress(news):
     print(wordpress_url, wordpress_username, wordpress_password)
     client = Client(wordpress_url, wordpress_username, wordpress_password)
 
-    news_title, news_article = get_news_content(news)
+    blog_title, blog_article = get_blog_content(blog)
     # 创建 WordPress 文章对象
     post = WordPressPost()
-    post.title = news_title
-    post.content = news_article
+    post.title = blog_title
+    post.content = blog_article
     post.post_status = 'draft'  # 文章状态，不写默认是草稿，private表示私密的，draft表示草稿，publish表示发布
     post.terms_names = {
         'post_tag': [],  # 文章所属标签，没有则自动创建
-        'category': ['News', news.category]  # 文章所属分类，没有则自动创建
+        'category': [blog.category]  # 文章所属分类，没有则自动创建
     }
 
     # default news featured image ID
@@ -47,10 +47,10 @@ def publish_to_wordpress(news):
     return
 
 
-def get_news_content(news):
+def get_blog_content(blog):
 
-    news_title = news.title
+    blog_title = blog.title
 
-    news_article = news.img_href + '\n' + news.article + '\n' + news.href
+    blog_article = blog.img_href + '\n' + blog.article + '\n' + blog.href
 
-    return news_title, news_article
+    return blog_title, blog_article
