@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect
 from app.blog import bp
 from app.extensions import db
-from app.models.post import ScrapedPost as Post
+from app.models.blog import ScrapedBlog as Blog
 
 from app.autotasks.push_blog import scheduled_push_blog
 
@@ -19,22 +19,22 @@ def index():
     offset = (page - 1) * items_per_page
 
     # Fetch items from the database
-    posts = Post.query.order_by(Post.gen_time.desc()).limit(items_per_page).offset(offset).all()
+    blogs = Blog.query.order_by(Blog.gen_time.desc()).limit(items_per_page).offset(offset).all()
 
-    total_items = Post.query.count()
+    total_items = Blog.query.count()
 
     # Calculate the total number of pages
     total_pages = (total_items + items_per_page - 1) // items_per_page
 
-    return render_template('blog/index.html', posts=posts, page=page, total_pages=total_pages)
+    return render_template('blog/index.html', blogs=blogs, page=page, total_pages=total_pages)
 
 
-@bp.route('/content/<int:post_id>')
-def content(post_id):
+@bp.route('/content/<int:blog_id>')
+def content(blog_id):
     # Fetch the item from the database
-    post = Post.query.get(post_id)
+    blog = Blog.query.get(blog_id)
 
-    return render_template('blog/content.html', post=post)
+    return render_template('blog/content.html', blog=blog)
 
 
 @bp.route('/push/', methods=['GET', 'POST'])

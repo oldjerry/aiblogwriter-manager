@@ -16,13 +16,13 @@
             </div>
 <!--            <ul>-->
             <div class="item-list">
-            {% for post in posts %}
+            {% for blog in blogs %}
                 <div class="item">
-                    <h2>{{ post.title }}</h2>
-                    <p class="date">Date: {{ post.date }}</p>
-                    <p class="category">Category: {{ post.category }}</p>
-                    <p class="status">Processed: {% if post.processed %}Yes{% else %}No{% endif %}</p>
-                    <a href="{{ url_for('blog.content', post_id=post.id) }}">Read More</a>
+                    <h2>{{ blog.title }}</h2>
+                    <p class="date">Date: {{ blog.date }}</p>
+                    <p class="category">Category: {{ blog.category }}</p>
+                    <p class="status">Processed: {% if blog.processed %}Yes{% else %}No{% endif %}</p>
+                    <a href="{{ url_for('blog.content', blog_id=blog.id) }}">Read More</a>
                 </div>
             {% endfor %}
             </div>

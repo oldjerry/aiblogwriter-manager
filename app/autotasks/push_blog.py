@@ -1,6 +1,6 @@
 import os
 from app.extensions import db
-from app.models.post import ScrapedPost as Blog
+from app.models.blog import ScrapedBlog as Blog
 
 from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.methods.posts import NewPost

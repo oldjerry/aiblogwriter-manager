@@ -6,7 +6,7 @@ from app.main import bp as main_bp
 
 from app.news import bp as news_bp
 from app.blog import bp as blog_bp
-from app.questions import bp as questions_bp
+# from app.questions import bp as questions_bp
 
 
 from flask_apscheduler import APScheduler
