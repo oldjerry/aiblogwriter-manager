@@ -19,14 +19,14 @@ def index():
     offset = (page - 1) * items_per_page
 
     # Fetch items from the database
-    newses = News.query.order_by(News.gen_time.desc()).limit(items_per_page).offset(offset).all()
+    news_list = News.query.order_by(News.gen_time.desc()).limit(items_per_page).offset(offset).all()
 
     total_items = News.query.count()
 
     # Calculate the total number of pages
     total_pages = (total_items + items_per_page - 1) // items_per_page
 
-    return render_template('news/index.html', newses=newses, page=page, total_pages=total_pages)
+    return render_template('news/index.html', news_list=news_list, page=page, total_pages=total_pages)
 
 
 @bp.route('/content/<int:news_id>')

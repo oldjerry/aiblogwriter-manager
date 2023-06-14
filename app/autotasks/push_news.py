@@ -10,8 +10,8 @@ from wordpress_xmlrpc.methods.posts import NewPost
 def scheduled_push_news():
 
     with db.app.app_context():
-        newses = News.query.filter_by(processed=False).all()
-        for news in newses:
+        news_list = News.query.filter_by(processed=False).all()
+        for news in news_list:
             publish_to_wordpress(news)
             news.processed = True
 
