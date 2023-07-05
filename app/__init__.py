@@ -8,9 +8,12 @@ from app.news import bp as news_bp
 from app.blog import bp as blog_bp
 # from app.questions import bp as questions_bp
 
+from app.autotasks.push_news import scheduled_push_news
+from app.autotasks.push_blog import scheduled_push_blog
 
-from flask_apscheduler import APScheduler
-from apscheduler.triggers.interval import IntervalTrigger
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 
 def create_app(config_class=Config):
@@ -30,25 +33,11 @@ def create_app(config_class=Config):
     # app.register_blueprint(questions_bp, url_prefix='/questions')
 
     # Register apscheduler tasks
-    scheduler = APScheduler()
+    scheduler = BackgroundScheduler()
 
-    scheduler.init_app(app)
+    scheduler.add_job(scheduled_push_blog, trigger=CronTrigger(hour=11, minute=50))
+    scheduler.add_job(scheduled_push_news, trigger=CronTrigger(hour=11, minute=55))
 
-    # # 解决FLASK DEBUG模式定时任务执行两次
-    # if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-    #     scheduler.api_enabled = True
-    #     scheduler.init_app(app)
-    #     # 实例话interval对象，如果不实例话的话有可能会报错没有interval这个
-    #     # interval = IntervalTrigger(
-    #     #     days=2,
-    #     #     start_date='2019-4-24 08:00:00',
-    #     #     end_date='2099-4-24 08:00:00',
-    #     #     timezone='Asia/Shanghai')
-    #     interval = IntervalTrigger(
-    #         seconds=3,
-    #     )
-    #     scheduler.add_job(func=scheduled_push_news, trigger=interval, id='test_one')
-
-    # scheduler.start()
+    scheduler.start()
 
     return app
